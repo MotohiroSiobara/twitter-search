@@ -1,0 +1,11 @@
+@import b3.vertical.fieldConstructor
+
+@main("ツイッターくん") {
+    @b3.form(routes.ApplicationController.search, 'class -> "form-group") {
+           <div class="col-sm-offset-0 col-sm-6">
+                <label for="searchWord">#つぶやきを取得 screen_nameを入力してください</label>
+                <input type="text" name="searchWord">
+                @b3.submit('class -> "btn btn-default"){ <span class="glyphicon glyphicon-globe"></span> 検索}
+           </div>
+    }
+}
