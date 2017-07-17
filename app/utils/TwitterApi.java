@@ -25,21 +25,27 @@ public class TwitterApi {
 		this.twitterApi = twitterApi;
   }
 
-	public ResponseList<Status> 	getUserTimeline(String screenName) throws TwitterException {
-		Paging paging = new Paging(1, 200);
-		ResponseList<Status> result = twitterApi.getUserTimeline(screenName, paging);
-    return result;
+	public ArrayList<List> getUserTimeline(String screenName, int maxPage) throws TwitterException {
+		ArrayList<List> resultArray = new ArrayList<List>();
+	  for (int page = 1; page < maxPage; page++) {
+	  	  Paging paging = new Paging(page, 200);
+	  	  List<Status> result = twitterApi.getUserTimeline(screenName, paging);
+	  	  resultArray.add(result);
+		}
+    return resultArray;
 	}
 
 	// ResponseList<Status> getUserTimelineのtextを返すメソッド
 	// RT, リプライを除く
-	public ArrayList<String> getText(List<Status> result) {
+	public ArrayList<String> getText(ArrayList<List> resultArray) {
     ArrayList<String> textArray = new ArrayList<String>();
-    for(Status tweet : result) {
-    	  if (checkRetweetAndReply(tweet)) {
-      	  continue;
-      }
-      textArray.add(tweet.getText());
+    for(List<Status> result : resultArray) {
+    	  for (Status tweet : result) {
+    	  		if (checkRetweetAndReply(tweet)) {
+        	  continue;
+        }
+        textArray.add(tweet.getText());
+    	  }
     }
     return textArray;
 	}

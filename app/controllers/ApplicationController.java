@@ -10,8 +10,6 @@ import twitter4j.TwitterException;
 import twitter4j.Status;
 import utils.TwitterApi;
 
-import java.util.List;
-import java.util.Map;
 import java.util.*;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -22,8 +20,13 @@ public class ApplicationController extends Controller {
   public Result search() throws TwitterException {
   	  Map<String, String> postData = Form.form(SearchWord.class).bindFromRequest().data();
   	  TwitterApi api = new TwitterApi();
-  	  List<Status> searchResult = api.getUserTimeline(postData.get("searchWord"));
-    ArrayList<String> textArray = api.getText(searchResult);
+//  	  ArrayList<List> resultArray = new ArrayList<List>();
+//  	  for (int page = 1; page < 10; page++) {
+//  	  	  List<Status> result = api.getUserTimeline(postData.get("searchWord"), page);
+//  	  	  resultArray.add(result);
+//  		}
+  	  ArrayList<List> resultArray = api.getUserTimeline(postData.get("searchWord"), 10);
+    ArrayList<String> textArray = api.getText(resultArray);
     return ok(views.html.tweetList.render(textArray));
   }
 
