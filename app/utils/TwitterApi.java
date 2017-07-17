@@ -25,14 +25,21 @@ public class TwitterApi {
 		this.twitterApi = twitterApi;
   }
 
-	public ArrayList<List> getUserTimeline(String screenName, int maxPage) throws TwitterException {
+	public ArrayList<List> roopGetUserTimeline(String screenName, int maxPage) throws TwitterException {
 		ArrayList<List> resultArray = new ArrayList<List>();
 	  for (int page = 1; page < maxPage; page++) {
-	  	  Paging paging = new Paging(page, 200);
-	  	  List<Status> result = twitterApi.getUserTimeline(screenName, paging);
+	  	  List<Status> result = getUserTimeline(screenName, page);
+//	  	  Paging paging = new Paging(page, 200);
+//	  	  List<Status> result = twitterApi.getUserTimeline(screenName, paging);
 	  	  resultArray.add(result);
 		}
     return resultArray;
+	}
+
+	public ResponseList<Status> getUserTimeline(String screenName, int page) throws TwitterException {
+		Paging paging = new Paging(page, 200);
+		ResponseList<Status> result = twitterApi.getUserTimeline(screenName, paging);
+		return result;
 	}
 
 	// ResponseList<Status> getUserTimelineのtextを返すメソッド

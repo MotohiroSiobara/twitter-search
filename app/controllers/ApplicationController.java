@@ -25,7 +25,7 @@ public class ApplicationController extends Controller {
 //  	  	  List<Status> result = api.getUserTimeline(postData.get("searchWord"), page);
 //  	  	  resultArray.add(result);
 //  		}
-  	  ArrayList<List> resultArray = api.getUserTimeline(postData.get("searchWord"), 10);
+  	  ArrayList<List> resultArray = api.roopGetUserTimeline(postData.get("searchWord"), 10);
     ArrayList<String> textArray = api.getText(resultArray);
     return ok(views.html.tweetList.render(textArray));
   }
