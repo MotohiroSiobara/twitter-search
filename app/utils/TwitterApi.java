@@ -1,9 +1,14 @@
 package utils;
 
+import java.util.ArrayList;
+
+//import controllers.twitter4j;
+//import controllers.twitter4j;
 import play.Play;
 //import java.net.*;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
+import java.util.List;
 
 public class TwitterApi {
 	private Twitter twitterApi;
@@ -18,23 +23,32 @@ public class TwitterApi {
 		TwitterFactory tf = new TwitterFactory(configInfo.build());
 		Twitter twitterApi = tf.getInstance();
 		this.twitterApi = twitterApi;
-//		String urlString = "https://api.twitter.com/1.1/statuses/user_timeline.json";
-//		try {
-//			URL url = new URL(urlString);
-//		  URLConnection uc = url.openConnection();
-//		  uc.setRequestProperty("authKey", "@IT java-tips URLConnection");
-//		} catch (MalformedURLException e) {
-//      System.err.println("Invalid URL format: " + urlString);
-//      System.exit(-1);
-//    } catch (IOException e) {
-//      System.err.println("Can't connect to " + urlString);
-//      System.exit(-1);
-//    }
   }
 
 	public ResponseList<Status> 	getUserTimeline(String screenName) throws TwitterException {
-		Paging paging = new Paging(1, 100);
-    ResponseList<Status> result = twitterApi.getUserTimeline(screenName, paging);
+		Paging paging = new Paging(1, 200);
+		ResponseList<Status> result = twitterApi.getUserTimeline(screenName, paging);
     return result;
+	}
+
+	// ResponseList<Status> getUserTimelineのtextを返すメソッド
+	// RT, リプライを除く
+	public ArrayList<String> getText(List<Status> result) {
+    ArrayList<String> textArray = new ArrayList<String>();
+    for(Status tweet : result) {
+    	  if (checkRetweetAndReply(tweet)) {
+      	  continue;
+      }
+      textArray.add(tweet.getText());
+    }
+    return textArray;
+	}
+
+	private boolean checkRetweetAndReply(Status tweet) {
+	  if (tweet.isRetweet() || tweet.getInReplyToUserId() > 0) {
+	  	  return true;
+	  } else {
+	  	  return false;
+	  }
 	}
 }

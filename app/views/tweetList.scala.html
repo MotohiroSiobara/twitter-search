@@ -1,10 +1,8 @@
-@(searchResult: List[twitter4j.Status])
+@(textArray: ArrayList[String])
 
 @main("ツイッターくん") {
   <a href="/">戻る</a>
-  @for(tweet <- searchResult) {
-    @if(tweet.getUserMentionEntities().isEmpty) {
-  		  <li>@tweet.getText()</li>
-    }
+  @for(text <- textArray) {
+  		<li>@text</li>
   }
 }

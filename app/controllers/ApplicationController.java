@@ -7,10 +7,12 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.api.libs.json.Json;
 import twitter4j.TwitterException;
+import twitter4j.Status;
 import utils.TwitterApi;
 
 import java.util.List;
 import java.util.Map;
+import java.util.*;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
@@ -20,8 +22,9 @@ public class ApplicationController extends Controller {
   public Result search() throws TwitterException {
   	  Map<String, String> postData = Form.form(SearchWord.class).bindFromRequest().data();
   	  TwitterApi api = new TwitterApi();
-    List<twitter4j.Status> searchResult = api.getUserTimeline(postData.get("searchWord"));
-    return ok(views.html.tweetList.render(searchResult));
+  	  List<Status> searchResult = api.getUserTimeline(postData.get("searchWord"));
+    ArrayList<String> textArray = api.getText(searchResult);
+    return ok(views.html.tweetList.render(textArray));
   }
 
   public Result index() {
