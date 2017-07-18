@@ -1,8 +1,12 @@
-@(textArray: ArrayList[String])
+@import twitter4j.Status
+@import utils.TwitterApi
+@(resultArray: List[List[Status]])
 
 @main("ツイッターくん") {
   <a href="/">戻る</a>
-  @for(text <- textArray) {
-  		<li>@text</li>
+  @for(tweetStatus <- resultArray) {
+    @for(tweet <- tweetStatus) {
+      <li>@tweet.getText()</li>
+    }
   }
 }

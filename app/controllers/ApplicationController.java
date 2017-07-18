@@ -20,14 +20,9 @@ public class ApplicationController extends Controller {
   public Result search() throws TwitterException {
   	  Map<String, String> postData = Form.form(SearchWord.class).bindFromRequest().data();
   	  TwitterApi api = new TwitterApi();
-//  	  ArrayList<List> resultArray = new ArrayList<List>();
-//  	  for (int page = 1; page < 10; page++) {
-//  	  	  List<Status> result = api.getUserTimeline(postData.get("searchWord"), page);
-//  	  	  resultArray.add(result);
-//  		}
-  	  ArrayList<List> resultArray = api.roopGetUserTimeline(postData.get("searchWord"), 10);
-    ArrayList<String> textArray = api.getText(resultArray);
-    return ok(views.html.tweetList.render(textArray));
+  	  List<List<Status>> resultArray = api.loopGetUserTimeline(postData.get("screenName"), 10);
+//    ArrayList<String> textArray = api.getText(resultArray);
+    return ok(views.html.tweetList.render(resultArray));
   }
 
   public Result index() {

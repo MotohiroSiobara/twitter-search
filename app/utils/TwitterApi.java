@@ -1,11 +1,7 @@
 package utils;
 
 import java.util.ArrayList;
-
-//import controllers.twitter4j;
-//import controllers.twitter4j;
 import play.Play;
-//import java.net.*;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 import java.util.List;
@@ -25,12 +21,11 @@ public class TwitterApi {
 		this.twitterApi = twitterApi;
   }
 
-	public ArrayList<List> roopGetUserTimeline(String screenName, int maxPage) throws TwitterException {
-		ArrayList<List> resultArray = new ArrayList<List>();
+	public List<List<Status>> loopGetUserTimeline(String screenName, int maxPage) throws TwitterException {
+		List<List<Status>> resultArray = new ArrayList();
 	  for (int page = 1; page < maxPage; page++) {
-	  	  List<Status> result = getUserTimeline(screenName, page);
-//	  	  Paging paging = new Paging(page, 200);
-//	  	  List<Status> result = twitterApi.getUserTimeline(screenName, paging);
+	  	  ResponseList<Status> response = getUserTimeline(screenName, page);
+	  	  List<Status> result = exceptRtAndReplyTweets(response);
 	  	  resultArray.add(result);
 		}
     return resultArray;
@@ -42,19 +37,16 @@ public class TwitterApi {
 		return result;
 	}
 
-	// ResponseList<Status> getUserTimelineのtextを返すメソッド
-	// RT, リプライを除く
-	public ArrayList<String> getText(ArrayList<List> resultArray) {
-    ArrayList<String> textArray = new ArrayList<String>();
-    for(List<Status> result : resultArray) {
-    	  for (Status tweet : result) {
-    	  		if (checkRetweetAndReply(tweet)) {
-        	  continue;
-        }
-        textArray.add(tweet.getText());
-    	  }
-    }
-    return textArray;
+	// RT・Replyを取り除く
+	private List<Status> exceptRtAndReplyTweets(ResponseList<Status> tweetList) {
+		List<Status> resultTweetList = new ArrayList();
+		for (Status tweet : tweetList) {
+			if (checkRetweetAndReply(tweet)) {
+    	    continue;
+      }
+			resultTweetList.add(tweet);
+		}
+		return resultTweetList;
 	}
 
 	private boolean checkRetweetAndReply(Status tweet) {
@@ -64,4 +56,17 @@ public class TwitterApi {
 	  	  return false;
 	  }
 	}
+//
+//	public ArrayList<String> getText(ArrayList<List> resultArray) {
+//    ArrayList<String> textArray = new ArrayList<String>();
+//    for(List<Status> result : resultArray) {
+//    	  for (Status tweet : result) {
+//    	  		if (checkRetweetAndReply(tweet)) {
+//        	  continue;
+//        }
+//        textArray.add(tweet.getText());
+//    	  }
+//    }
+//    return textArray;
+//	}
 }
