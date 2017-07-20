@@ -2,10 +2,19 @@
 
 @main("ツイッターくん") {
     @b3.form(routes.ApplicationController.search, 'class -> "form-group") {
-           <div class="col-sm-offset-0 col-sm-6">
-                <label for="screenName">#つぶやきを取得 screen_nameを入力してください</label>
-                <input type="text" name="screenName">
-                @b3.submit('class -> "btn btn-default"){ <span class="glyphicon glyphicon-globe"></span> 検索}
-           </div>
+      <div class="col-sm-offset-0 col-sm-6">
+           <label for="screenName">#つぶやきを取得 screen_nameを入力してください</label>
+           <input type="text" name="screenName">
+           @b3.submit('class -> "btn btn-default"){ <span class="glyphicon glyphicon-globe"></span> 検索}
+      </div>
+    }
+    <h4>ユーザーを登録する
+    @b3.form(routes.ApplicationController.create, 'class -> "form-group") {
+      <div class="col-sm-offset-0 col-sm-6">
+        <label for="screenName">#スクリーンネームを入力してください</label>
+        <input type="text" name="screenName">
+        @b3.submit('class -> "btn btn-default"){ <span class="glyphicon glyphicon-globe"></span> 検索}
+      </div>
     }
 }
+

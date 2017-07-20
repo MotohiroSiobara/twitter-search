@@ -21,11 +21,14 @@ public class ApplicationController extends Controller {
   	  Map<String, String> postData = Form.form(SearchWord.class).bindFromRequest().data();
   	  TwitterApi api = new TwitterApi();
   	  List<List<Status>> resultArray = api.loopGetUserTimeline(postData.get("screenName"), 10);
-//    ArrayList<String> textArray = api.getText(resultArray);
     return ok(views.html.tweetList.render(resultArray));
   }
 
   public Result index() {
   	  return ok(views.html.index.render());
+  }
+
+  public Result create() {
+  	  return redirect("/");
   }
 }
