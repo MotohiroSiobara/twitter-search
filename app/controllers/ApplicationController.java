@@ -1,6 +1,6 @@
 package controllers;
 
-import models.SearchWord;
+import models.*;
 
 import play.data.Form;
 import play.mvc.Controller;
@@ -16,6 +16,9 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlRow;
+
 public class ApplicationController extends Controller {
   public Result search() throws TwitterException {
   	  Map<String, String> postData = Form.form(SearchWord.class).bindFromRequest().data();
@@ -25,10 +28,17 @@ public class ApplicationController extends Controller {
   }
 
   public Result index() {
-  	  return ok(views.html.index.render());
+  	  List<User> users = User.find.all();
+  	  System.out.print(users);
+  	  return ok(views.html.index.render(users));
   }
 
   public Result create() {
+  	  Map<String, String> postData = Form.form(SearchWord.class).bindFromRequest().data();
+  	  User user = new User(postData.get("screenName"));
+  	  Ebean.execute(()->{
+    	  user.save();
+  	  });
   	  return redirect("/");
   }
 }

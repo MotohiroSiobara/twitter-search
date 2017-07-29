@@ -1,20 +1,43 @@
 @import b3.vertical.fieldConstructor
+@import models.User
+
+@(users: List[User])
 
 @main("ツイッターくん") {
-    @b3.form(routes.ApplicationController.search, 'class -> "form-group") {
-      <div class="col-sm-offset-0 col-sm-6">
-           <label for="screenName">#つぶやきを取得 screen_nameを入力してください</label>
-           <input type="text" name="screenName">
-           @b3.submit('class -> "btn btn-default"){ <span class="glyphicon glyphicon-globe"></span> 検索}
-      </div>
-    }
-    <h4>ユーザーを登録する
-    @b3.form(routes.ApplicationController.create, 'class -> "form-group") {
-      <div class="col-sm-offset-0 col-sm-6">
-        <label for="screenName">#スクリーンネームを入力してください</label>
-        <input type="text" name="screenName">
-        @b3.submit('class -> "btn btn-default"){ <span class="glyphicon glyphicon-globe"></span> 検索}
-      </div>
-    }
+  <h4>ツイートを検索</h4>
+  @b3.form(routes.ApplicationController.search, 'class -> "form-group") {
+    <div class="col-sm-offset-0 col-sm-12">
+         <label for="screenName">#つぶやきを取得 screen_nameを入力してください</label>
+         <input type="text" name="screenName">
+         @b3.submit('class -> "btn btn-default"){ <span class="glyphicon glyphicon-globe"></span> 検索}
+    </div>
+  }
+  <h4>ユーザーを登録する</h4>
+  @b3.form(routes.ApplicationController.create, 'class -> "form-group") {
+    <div class="col-sm-offset-0 col-sm-12">
+      <label for="screenName">#スクリーンネームを入力してください</label>
+      <input type="text" name="screenName">
+      @b3.submit('class -> "btn btn-default"){ <span class="glyphicon glyphicon-globe"></span> 作成}
+    </div>
+  }
+  <h4>登録ユーザー一覧</h4>
+  @for(user <- users) {
+    <table class="table table-striped" style="table-layout:fixed;width:100%;">
+      <thead>
+        <tr>
+        <th class="col-xs-2">画像</th>
+        <th class="col-xs-6">名前</th>
+        <th class="col-xs-2">スクリーンネーム</th>
+      </tr>
+      </thead>
+	    <tbody>
+	      <tr>
+	      <td class="col-xs-2"><img src=@user.image_url></td>
+	      <td class="col-xs-6">@user.name</td>
+	      <td class="col-xs-2">@user.screen_name</td>
+	      </tr>
+	    </tbody>
+    	</table>
+  }
 }
 
