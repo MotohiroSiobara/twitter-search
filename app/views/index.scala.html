@@ -20,26 +20,28 @@
       @b3.submit('class -> "btn btn-default"){ <span class="glyphicon glyphicon-globe"></span> 作成}
     </div>
   }
-  <h4>登録ユーザー一覧</h4>
-  @for(user <- users) {
-    <table class="table table-striped" style="table-layout:fixed;width:100%;">
-      <thead>
-        <tr>
-        <th class="col-xs-2">画像</th>
-        <th class="col-xs-2">名前</th>
-        <th class="col-xs-2">スクリーンネーム</th>
-        <th class="col-xs-2">アクション</th>
-      </tr>
-      </thead>
-	    <tbody>
+  <h4>登録ユーザ一</h4>
+  <table class="table table-striped" style="table-layout:fixed;width:100%;">
+    <thead>
+      <tr>
+      <th class="col-xs-2">画像</th>
+      <th class="col-xs-2">名前</th>
+      <th class="col-xs-2">フォロー/フォロワー数</th>
+      <th class="col-xs-2">ファボ数/ツイート数</th>
+      <th class="col-xs-2">アクション</th>
+    </tr>
+    </thead>
+	  <tbody>
+      @for(user <- users) {
 	      <tr>
-	      <td class="col-xs-2"><img src=@user.image_url width="128" height="128"></td>
-	      <td class="col-xs-6">@user.name</td>
-	      <td class="col-xs-2">@user.screen_name</td>
-	      <td>
+	      <td class="col-xs-2"><a href="https://twitter.com/@user.screen_name"><img src=@user.image_url width="128" height="128"></a></td>
+	      <td class="col-xs-2"><a href="https://twitter.com/@user.screen_name">@user.name</a></td>
+	      <td class="col-xs-2">@user.follow_count / @user.follower_count</td>
+	      <td class="col-xs-2">@user.favorite_count / @user.tweet_count</td>
+	      <td class="col-xs-2">
 	        @b3.form(routes.ApplicationController.search, 'class -> "form-group") {
 	        　<input type="hidden" name="screenName" value=@user.screen_name>
-	          @b3.submit('class -> "btn btn-success"){ <span class="glyphicon glyphicon-globe"></span> ツイート取得}
+	          @b3.submit('class -> "btn btn-success"){ <span class="glyphicon glyphicon-globe"></span> ツイート分析}
 	        }
 		      @b3.form(routes.ApplicationController.fetch(user.id), 'class -> "form-group") {
 		     	  　<input type="hidden" name="screenName" value=@user.screen_name>
@@ -47,8 +49,8 @@
 		      }
 	      </td>
 	      </tr>
-	    </tbody>
-    	</table>
-  }
+      }
+    	</tbody>
+  </table>
 }
 

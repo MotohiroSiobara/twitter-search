@@ -27,6 +27,10 @@ public class User extends Model {
   public String name;
   public String screen_name;
   public String image_url;
+  public Integer follow_count;
+  public Integer follower_count;
+  public Integer favorite_count;
+  public Integer tweet_count;
 
   public User(String screenName) {
   	  this.screen_name = screenName;

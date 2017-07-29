@@ -39,31 +39,32 @@ public class ApplicationController extends Controller {
   	  TwitterApi api = new TwitterApi();
   	  Map<String, String> postData = Form.form(SearchWord.class).bindFromRequest().data();
   	  String screenName = postData.get("screenName");
-  	  twitter4j.ResponseList<twitter4j.User> userDates = api.lookupUsers(screenName);
   	  User user = new User(postData.get("screenName"));
-  	  for (twitter4j.User data : userDates) {
-  	    user.name = data.getName().replaceAll("[^\\u0000-\\uFFFF]", "\uFFFD");
-  	    user.image_url = data.getOriginalProfileImageURL();
-  	    Ebean.execute(()->{
-      	  user.save();
-    	  });
-  	  }
+  	  userSave(user, screenName);
   	  return redirect("/");
   }
 
   public Result fetch(Long id) throws TwitterException {
-  	  TwitterApi api = new TwitterApi();
   	  Map<String, String> postData = Form.form(SearchWord.class).bindFromRequest().data();
   	  String screenName = postData.get("screenName");
-  	  twitter4j.ResponseList<twitter4j.User> userDates = api.lookupUsers(screenName);
   	  User user = User.finder.byId(id);
-  	  for (twitter4j.User data : userDates) {
-  	    user.name = data.getName().replaceAll("[^\\u0000-\\uFFFF]", "\uFFFD");
-  	    user.image_url = data.getOriginalProfileImageURL();
-  	    Ebean.execute(()->{
-      	  user.save();
-    	  });
-  	  }
+  	  userSave(user, screenName);
   	  return redirect("/");
+  }
+
+  public void userSave(User user, String screenName) throws TwitterException {
+  	  TwitterApi api = new TwitterApi();
+  	  twitter4j.ResponseList<twitter4j.User> userDates = api.lookupUsers(screenName);
+	  for (twitter4j.User data : userDates) {
+	    user.name = data.getName().replaceAll("[^\\u0000-\\uFFFF]", "\uFFFD");
+	    user.image_url = data.getOriginalProfileImageURL();
+	    user.follow_count = data.getFriendsCount();
+	    user.follower_count = data.getFollowersCount();
+	    user.favorite_count = data.getFavouritesCount();
+	    user.tweet_count = data.getStatusesCount();
+	    Ebean.execute(()->{
+    	    user.save();
+  	    });
+	  }
   }
 }

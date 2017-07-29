@@ -8,6 +8,10 @@ create table user (
   name                          varchar(255),
   screen_name                   varchar(255),
   image_url                     varchar(255),
+  follow_count                  integer,
+  follower_count                integer,
+  favorite_count                integer,
+  tweet_count                   integer,
   constraint pk_user primary key (id)
 );
 

@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class DateParser {
   public static Date parse(String str) {
-	  LocalDate ld = LocalDate.parse(str, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	  LocalDate ld = LocalDate.parse(str, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 	  Instant i = ld.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
 	  return Date.from(i);
   }
