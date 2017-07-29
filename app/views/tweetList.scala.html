@@ -1,12 +1,30 @@
 @import twitter4j.Status
 @import utils.TwitterApi
+@import utils.DateParser
 @(resultArray: List[List[Status]])
 
 @main("ツイッターくん") {
   <a href="/">戻る</a>
   @for(tweetStatus <- resultArray) {
     @for(tweet <- tweetStatus) {
-      <li>@tweet.getText()</li>
+      <table class="table table-striped" style="table-layout:fixed;width:100%;">
+        <thead>
+          <tr>
+		        <th class="col-xs-6">ツイート</th>
+		        <th class="col-xs-2">作成日</th>
+		        <th class="col-xs-2">like</th>
+		        <th class="col-xs-2">RT</th>
+		      </tr>
+	      </thead>
+	      <tbody>
+	        <tr>
+		        <td class="col-xs-6">@tweet.getText()</td>
+		        <td class="col-xs-2">@(DateParser.format(tweet.getCreatedAt()))</td>
+		        <td class="col-xs-2">@tweet.getFavoriteCount()</td>
+		        <td class="col-xs-2">@tweet.getRetweetCount()</td>
+		      </tr>
+	      </tbody>
+      </table>
     }
   }
 }
