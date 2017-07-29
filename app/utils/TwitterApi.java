@@ -37,11 +37,10 @@ public class TwitterApi {
 		return result;
 	}
 
-//	public User showUser(String screenName) throws TwitterException {
-//		User result = twitterApi.showUser(screenName);
-//		return result;
-//	}
-
+	public ResponseList<User> lookupUsers(String screenNames) throws TwitterException {
+		ResponseList<User> result = twitterApi.lookupUsers(screenNames);
+		return result;
+	}
 	// RT・Replyを取り除く
 	private List<Status> exceptRtAndReplyTweets(ResponseList<Status> tweetList) {
 		List<Status> resultTweetList = new ArrayList();
@@ -61,17 +60,4 @@ public class TwitterApi {
 	  	  return false;
 	  }
 	}
-//
-//	public ArrayList<String> getText(ArrayList<List> resultArray) {
-//    ArrayList<String> textArray = new ArrayList<String>();
-//    for(List<Status> result : resultArray) {
-//    	  for (Status tweet : result) {
-//    	  		if (checkRetweetAndReply(tweet)) {
-//        	  continue;
-//        }
-//        textArray.add(tweet.getText());
-//    	  }
-//    }
-//    return textArray;
-//	}
 }

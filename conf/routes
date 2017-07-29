@@ -1,4 +1,5 @@
 GET     /                           controllers.ApplicationController.index()
 POST    /search                     controllers.ApplicationController.search()
 POST    /create                     controllers.ApplicationController.create()
+POST    /fetch                      controllers.ApplicationController.fetch(id: Long)
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

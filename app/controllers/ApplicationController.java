@@ -8,6 +8,7 @@ import play.mvc.Result;
 import play.api.libs.json.Json;
 import twitter4j.TwitterException;
 import twitter4j.Status;
+
 import utils.TwitterApi;
 
 import java.util.*;
@@ -18,6 +19,7 @@ import javax.script.ScriptEngineManager;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.SqlRow;
+import com.avaje.ebean.ExpressionList;
 
 public class ApplicationController extends Controller {
   public Result search() throws TwitterException {
@@ -33,12 +35,35 @@ public class ApplicationController extends Controller {
   	  return ok(views.html.index.render(users));
   }
 
-  public Result create() {
+  public Result create() throws TwitterException {
+  	  TwitterApi api = new TwitterApi();
   	  Map<String, String> postData = Form.form(SearchWord.class).bindFromRequest().data();
+  	  String screenName = postData.get("screenName");
+  	  twitter4j.ResponseList<twitter4j.User> userDates = api.lookupUsers(screenName);
   	  User user = new User(postData.get("screenName"));
-  	  Ebean.execute(()->{
-    	  user.save();
-  	  });
+  	  for (twitter4j.User data : userDates) {
+  	    user.name = data.getName().replaceAll("[^\\u0000-\\uFFFF]", "\uFFFD");
+  	    user.image_url = data.getOriginalProfileImageURL();
+  	    Ebean.execute(()->{
+      	  user.save();
+    	  });
+  	  }
+  	  return redirect("/");
+  }
+
+  public Result fetch(Long id) throws TwitterException {
+  	  TwitterApi api = new TwitterApi();
+  	  Map<String, String> postData = Form.form(SearchWord.class).bindFromRequest().data();
+  	  String screenName = postData.get("screenName");
+  	  twitter4j.ResponseList<twitter4j.User> userDates = api.lookupUsers(screenName);
+  	  User user = User.finder.byId(id);
+  	  for (twitter4j.User data : userDates) {
+  	    user.name = data.getName().replaceAll("[^\\u0000-\\uFFFF]", "\uFFFD");
+  	    user.image_url = data.getOriginalProfileImageURL();
+  	    Ebean.execute(()->{
+      	  user.save();
+    	  });
+  	  }
   	  return redirect("/");
   }
 }

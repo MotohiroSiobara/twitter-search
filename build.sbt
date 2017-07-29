@@ -12,7 +12,8 @@ libraryDependencies ++= Seq(
   javaWs,
   "mysql" % "mysql-connector-java" % "5.1.42",
   "org.twitter4j" % "twitter4j-core" % "4.0.5",
-  "com.adrianhurt" %% "play-bootstrap" % "1.2-P25-B3-RC2"
+  "com.adrianhurt" %% "play-bootstrap" % "1.2-P25-B3-RC2",
+  evolutions
 )
 
 EclipseKeys.preTasks := Seq(compile in Compile)

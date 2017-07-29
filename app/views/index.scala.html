@@ -26,15 +26,26 @@
       <thead>
         <tr>
         <th class="col-xs-2">画像</th>
-        <th class="col-xs-6">名前</th>
+        <th class="col-xs-2">名前</th>
         <th class="col-xs-2">スクリーンネーム</th>
+        <th class="col-xs-2">アクション</th>
       </tr>
       </thead>
 	    <tbody>
 	      <tr>
-	      <td class="col-xs-2"><img src=@user.image_url></td>
+	      <td class="col-xs-2"><img src=@user.image_url width="128" height="128"></td>
 	      <td class="col-xs-6">@user.name</td>
 	      <td class="col-xs-2">@user.screen_name</td>
+	      <td>
+	        @b3.form(routes.ApplicationController.search, 'class -> "form-group") {
+	        　<input type="hidden" name="screenName" value=@user.screen_name>
+	          @b3.submit('class -> "btn btn-success"){ <span class="glyphicon glyphicon-globe"></span> ツイート取得}
+	        }
+		      @b3.form(routes.ApplicationController.fetch(user.id), 'class -> "form-group") {
+		     	  　<input type="hidden" name="screenName" value=@user.screen_name>
+		         @b3.submit('class -> "btn btn-primary"){ <span class="glyphicon glyphicon-globe"></span> 最新情報を取得}
+		      }
+	      </td>
 	      </tr>
 	    </tbody>
     	</table>

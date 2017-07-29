@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Version;
 import com.avaje.ebean.Model;
+import com.avaje.ebean.Model.Find;
+
 import play.data.format.*;
 import play.data.validation.*;
 import javax.validation.constraints.Max;
@@ -21,6 +23,7 @@ import utils.DateParser;
 public class User extends Model {
 
   @Id
+  public Long id;
   public String name;
   public String screen_name;
   public String image_url;
@@ -39,4 +42,5 @@ public class User extends Model {
   public static Finder<String, User> find = new Finder<String, User> (
   		String.class, User.class
   	);
+  public static Find<Long, User> finder = new Find<Long, User>(){};
 }
